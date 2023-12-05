@@ -1,0 +1,14 @@
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\DependencyInjection.deps.json
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\DependencyInjection.dll
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\DependencyInjection.pdb
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyInjection.csproj.AssemblyReference.cache
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyInjection.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyInjection.AssemblyInfoInputs.cache
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyInjection.AssemblyInfo.cs
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyInjection.csproj.CoreCompileInputs.cache
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyInjection.dll
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\refint\DependencyInjection.dll
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyInjection.pdb
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\ref\DependencyInjection.dll
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\DependencyInjection.runtimeconfig.json
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyInjection.genruntimeconfig.cache

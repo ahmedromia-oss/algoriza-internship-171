@@ -1,0 +1,17 @@
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\Repository.csproj.AssemblyReference.cache
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\Repository.AssemblyInfoInputs.cache
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\Repository.AssemblyInfo.cs
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\Repository.csproj.CoreCompileInputs.cache
+C:\Users\Ahmed\Desktop\vezeeta\Repository\bin\Debug\net7.0\Repository.deps.json
+C:\Users\Ahmed\Desktop\vezeeta\Repository\bin\Debug\net7.0\Repository.runtimeconfig.json
+C:\Users\Ahmed\Desktop\vezeeta\Repository\bin\Debug\net7.0\Repository.dll
+C:\Users\Ahmed\Desktop\vezeeta\Repository\bin\Debug\net7.0\Repository.pdb
+C:\Users\Ahmed\Desktop\vezeeta\Repository\bin\Debug\net7.0\Core.dll
+C:\Users\Ahmed\Desktop\vezeeta\Repository\bin\Debug\net7.0\Core.pdb
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\Repository.csproj.CopyComplete
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\Repository.dll
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\refint\Repository.dll
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\Repository.pdb
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\Repository.genruntimeconfig.cache
+C:\Users\Ahmed\Desktop\vezeeta\Repository\obj\Debug\net7.0\ref\Repository.dll
