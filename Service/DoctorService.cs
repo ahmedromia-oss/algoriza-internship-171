@@ -31,19 +31,24 @@ namespace Service
         }
 
 
-        public async Task<GetDoctorDto> addDoctor(addDoctorDto addDoctorDto , User user)
+        public async Task<Doctor> addDoctor(addDoctorDto addDoctorDto , User user)
         {
-            var doctor = await this.unitOfWork.doctors.addDoctor(addDoctorDto , user);
-            await this.unitOfWork.complete();
+            
+            
+                var doctor = await this.unitOfWork.doctors.addDoctor(addDoctorDto, user);
+
+                await this.unitOfWork.complete();
+            
+            
             
             return doctor;
         }
 
        
 
-        public async Task<ICollection<GetDoctorDto>> getAll(PaginationModel paginationModel)
+        public async Task<ICollection<GetDoctorDto>> getAll(PaginationModel paginationModel, string searchTerm)
         {
-            return await this.unitOfWork.doctors.GetAll(paginationModel);
+            return await this.unitOfWork.doctors.getAllDoctors(paginationModel , searchTerm);
         }
 
         public async Task<GetDoctorDto> getDoctorById(Expression<Func<Doctor , bool>> where)
@@ -63,34 +68,39 @@ namespace Service
             throw new Exception("Something went Wrong");
         }
        
-        public async Task<bool> addAppointment(AddAppointmentDto addAppointmentDto, string Email)
+        public async Task<bool> addAppointment(AddApointments addAppointmentDto, string Email)
         {
              
-                await this.unitOfWork.appointment.addAppointment(addAppointmentDto , Email);
+                await this.unitOfWork.time.addAppointment(addAppointmentDto , Email);
                 return await this.unitOfWork.complete();
         }
 
-        public async Task<ICollection<getBookers>> getBookers(string email)
+        public async Task<ICollection<getBookers>> getBookers(string email, int day , PaginationModel paginationModel)
         {
-           return await this.unitOfWork.appointment.getBookers(email);
+           return await this.unitOfWork.appointment.getBookers(email , day , paginationModel );
         }
 
-        public async Task<bool> confirmBook(string userId, string timeId, string doctorEmail)
+        public async Task<bool> confirmBook( string timeId, string doctorEmail)
         {
-            await this.unitOfWork.appointment.confirmCheckUp(userId, timeId, doctorEmail);
+            await this.unitOfWork.appointment.confirmCheckUp(timeId, doctorEmail);
             return await this.unitOfWork.complete();
         }
 
         public async Task<bool> UpdateTime(string email, string timeId, updateAppointment updateAppointment)
         {
-           await this.unitOfWork.appointment.updateTime(email, timeId, updateAppointment);
+           await this.unitOfWork.time.updateTime(email, timeId, updateAppointment);
             return await this.unitOfWork.complete();
         }
 
         public async Task<bool> deleteTime(string email, string timeId)
         {
-            await this.unitOfWork.appointment.deleteTime(email, timeId);
+            await this.unitOfWork.time.deleteTime(email, timeId);
             return await this.unitOfWork.complete();
+        }
+
+        public async Task<int> count()
+        {
+            return await this.unitOfWork.doctors.count();
         }
     }
 }

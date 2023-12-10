@@ -12,7 +12,7 @@ namespace Core.ReboInterfaces
 {
     public interface IUserRepository:IRepository<User , GetUserDto>
     {
-        public Task<User> addUser(signUpDto signUpDto);
+        public Task<User> addUser(signUpDto signUpDto , int userType);
 
         public Task<bool> updateUser(updateUserDto updateUserDto , string id);
 

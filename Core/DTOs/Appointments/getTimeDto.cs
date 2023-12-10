@@ -11,6 +11,8 @@ namespace Core.DTOs.Appointments
     {
         public string Id { get; set; }
         public TimeOnly Time { get; set; }
+
+        public decimal price { get; set; }
         public bool IsBooked { get; set; }
        
     }

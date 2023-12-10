@@ -16,9 +16,8 @@ namespace Core.Services
          
         public Task<bool> deleteUser(string userId);
         public Task<string> signIn(signInDto signInDto);
-        public Task<User> signUp(signUpDto signUpDto);
-        protected string getToken(List<Claim> authClaims);
-        protected Task<List<Claim>> checkRoleToken(User user);
+        public Task<User> signUp(signUpDto signUpDto , int userType);
+        
 
         public Task<bool> AddToRole(int Role , User user);
 

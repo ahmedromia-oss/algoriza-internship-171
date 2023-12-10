@@ -9,6 +9,7 @@ using Vezeeta.ResponseShape;
 
 namespace Vezeeta.Controllers
 {
+    [ApiController]
     [Route("api/[controller]/[action]")]
     public class AuthController : ControllerBase
     {
@@ -24,16 +25,12 @@ namespace Vezeeta.Controllers
         public async Task<IActionResult> signIn([FromBody] signInDto signInDto)
         {
             
-            try
-            {
+          
+            
                 return Ok(new TokenResponse { statusCode = Convert.ToInt32(Enums.StatusCode.Success), Token = await this.authService.signIn(signInDto) });
 
-            }
-            catch (Exception ex)
-            {
-                return NotFound(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.NotFound), Errors = new  { message = ex.Message } });
-
-            }
+            
+           
         }
       
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -26,8 +27,9 @@ namespace Core.DTOs.Auth
         public DateTime DateOfBirth { get; set; }
 
         [Required]
+        [Range(1, 2)]
         [JsonConverter(typeof(int))]
-        public int Gender { get; set; }
+        public Enums.Gender Gender { get; set; }
         
         [Required]
         [Compare("Password")]
@@ -35,6 +37,6 @@ namespace Core.DTOs.Auth
 
         public IFormFile? Image { get; set; }
         
-        public int? UserType { get; set; }
+        
     }
 }

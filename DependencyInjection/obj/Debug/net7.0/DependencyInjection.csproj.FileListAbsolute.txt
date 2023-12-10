@@ -12,3 +12,10 @@ C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyIn
 C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\ref\DependencyInjection.dll
 C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\DependencyInjection.runtimeconfig.json
 C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyInjection.genruntimeconfig.cache
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\Core.dll
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\Repository.dll
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\Service.dll
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\Core.pdb
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\Repository.pdb
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\bin\Debug\net7.0\Service.pdb
+C:\Users\Ahmed\Desktop\vezeeta\DependencyInjection\obj\Debug\net7.0\DependencyInjection.csproj.CopyComplete

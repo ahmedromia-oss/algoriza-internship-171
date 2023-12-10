@@ -1,4 +1,5 @@
-﻿using Core.Domain;
+﻿using AutoMapper;
+using Core.Domain;
 using Core.DTOs.Appointments;
 using Core.DTOs.Auth;
 using Core.DTOs.bookers;
@@ -13,54 +14,50 @@ using Vezeeta.ResponseShape;
 
 namespace Vezeeta.Controllers
 {
+    [ApiController]
     [Route("api/[controller]/[action]")]
     public class PatientController : ControllerBase
     {
         private readonly IPatientService patientService;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IAuthService authService;
+        private readonly IDiscountService discountService;
+        private readonly IMapper mapper;
 
-        public PatientController(IPatientService patientService, IHttpContextAccessor httpContextAccessor, IAuthService authService)
+        public PatientController(IPatientService patientService, IHttpContextAccessor httpContextAccessor, IAuthService authService , IDiscountService discountService , IMapper mapper)
         {
             this.patientService = patientService;
             this.httpContextAccessor = httpContextAccessor;
             this.authService = authService;
+            this.discountService = discountService;
+            this.mapper = mapper;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddPatient([FromForm] addPatientDto addPatientDto, [FromForm] signUpDto signUpDto)
+        public async Task<IActionResult> RegisterPatient([FromForm] addPatientDto addPatientDto, [FromForm] signUpDto signUpDto)
         {
-            try
-            {
-                signUpDto.UserType = Convert.ToInt32(Enums.UserTypes.Patient);
-                User user = await this.authService.signUp(signUpDto);
+        
+                User user = await this.authService.signUp(signUpDto , Convert.ToInt32(Enums.UserTypes.Patient));
                 await this.authService.AddToRole(Convert.ToInt32(Enums.UserTypes.Patient) , user);
                 await this.patientService.addPatient(addPatientDto, user);
-                return CreatedAtAction(nameof(AddPatient) , new serviceResponse<string> { statusCode = Convert.ToInt32(Enums.StatusCode.created), data = "Patient Added" });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.BadRequest), Errors = new { message = ex.Message } });
-            }
+                return CreatedAtAction(nameof(RegisterPatient) , new serviceResponse<string> { statusCode = Convert.ToInt32(Enums.StatusCode.created), data = "Patient Added" });
+            
+            
         }
         [HttpGet]
-        public async Task<IActionResult> patients([FromQuery] int page, [FromQuery] int pageSize)
+        public async Task<IActionResult> patients([FromQuery] int page, [FromQuery] int pageSize , [FromQuery] string searchTerm = "")
         {
-            return Ok(new serviceResponse<ICollection<GetPatientDto>> { statusCode = Convert.ToInt32(Enums.StatusCode.Success), data = await this.patientService.getAll(new PaginationModel { Page = page, PageSize = pageSize }) });
+            return Ok(new serviceResponse<ICollection<getPatientZipped>> { statusCode = Convert.ToInt32(Enums.StatusCode.Success), data =this.mapper.Map<ICollection<getPatientZipped>>(await this.patientService.getAll(new PaginationModel { Page = page, PageSize = pageSize } , searchTerm)) });
         }
 
         [HttpGet("{id}")]
 
         public async Task<IActionResult> patient(string id)
         {
-            try
-            {
+           
                 return Ok(new serviceResponse<GetPatientDto> { statusCode = Convert.ToInt32(Enums.StatusCode.Success), data = await this.patientService.getById(id) });
-            }
-            catch (Exception ex)
-            {
-                return NotFound(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.NotFound), Errors = new { message = ex.Message } });
-            }
+            
+            
         }
         [HttpGet]
         [Authorize(AuthenticationSchemes = "Bearer " , Roles = "Patient")]
@@ -73,17 +70,22 @@ namespace Vezeeta.Controllers
         }
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer " , Roles = "Patient")]
-        public async Task<IActionResult> bookAppointment([FromQuery] string timeId)
+        public async Task<IActionResult> bookAppointment([FromBody] AddBookDto addBookDto)
         {
             string userEmail = this.httpContextAccessor.HttpContext.User.Identity.Name;
-            try
+            PatientTime patientTime = await this.patientService.book(addBookDto.timeId, userEmail);
+            if (addBookDto.DiscountCode != null)
             {
-                return CreatedAtAction(nameof(bookAppointment), new serviceResponse<bool> {  statusCode = Convert.ToInt32(Enums.StatusCode.created), data = await this.patientService.book(timeId, userEmail) });
+                await this.discountService.useDiscount(addBookDto.DiscountCode , userEmail , patientTime.timeId);
+
             }
-            catch (Exception ex)
-            {
-                return NotFound(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.NotFound), Errors = new { message = ex.Message } });
-            }
+
+
+
+
+            return CreatedAtAction(nameof(bookAppointment), new serviceResponse<string> {  statusCode = Convert.ToInt32(Enums.StatusCode.created), data = "Appointment Booked" });
+            
+          
 
 
 
@@ -105,25 +107,17 @@ namespace Vezeeta.Controllers
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer " , Roles = "Patient")]
 
-        public async Task<IActionResult> cancelBooking([FromQuery] string timeId)
+        public async Task<IActionResult> cancelBooking([FromQuery] string BookingId)
         {
             string userEmail = this.httpContextAccessor.HttpContext.User.Identity.Name;
-            try
-            {
+
+            PatientTime patientTime =await this.patientService.cancelBooking(userEmail, BookingId);
 
 
-                await this.patientService.cancelBooking(userEmail, timeId);
+
+
                 return Ok(new serviceResponse<string> { statusCode = Convert.ToInt32(Enums.StatusCode.Success) , data = "cancelled Booking"});    
-            }
-            catch (FileNotFoundException ex)
-            {
-                return NotFound(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.NotFound), Errors = new { message = ex.Message } });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.BadRequest), Errors = new { message = ex.Message } });
-            }
-
+          
         }
     }
 }

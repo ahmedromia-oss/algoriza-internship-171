@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Models;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +23,7 @@ namespace Core.DTOs.User
         public DateTime? DateOfBirth { get; set; }
 
         [JsonConverter(typeof(int))]
-        public int? Gender { get; set; }
+        public Enums.Gender? Gender { get; set; }
 
         public IFormFile? Image { get; set; }
     }

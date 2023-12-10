@@ -4,6 +4,8 @@ using Core.ReboInterfaces;
 using Core.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -15,6 +17,7 @@ using System.Reflection;
 using System.Text;
 using Vezeeta.Filters;
 using Vezeeta.Helpers;
+using Vezeeta.MiddleWare;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,7 +48,6 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddTransient<IUnitOfWork , UnitOfWork>();
-
 builder.Services.AddScoped(typeof(IRepository<Object , Object>), typeof(Repository<Object, Object>));
 builder.Services.AddScoped(typeof(IAuthService), typeof(AuthService));
 builder.Services.AddScoped(typeof(ISpecializationService), typeof(SpecializationService));
@@ -54,21 +56,25 @@ builder.Services.AddScoped(typeof(IPatientService), typeof(PatientService));
 builder.Services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
 builder.Services.AddScoped(typeof(IUserService), typeof(UserService));
 builder.Services.AddScoped(typeof(IAppointmentRepository), typeof(AppointmentRepository));
-
-
-
-
-
-
+builder.Services.AddScoped(typeof(IDiscountRepository), typeof(DiscountRebository));
+builder.Services.AddScoped(typeof(IDiscountService), typeof(DiscountService));
+builder.Services.AddScoped(typeof(IRequestService), typeof(RequestService));
+builder.Services.AddScoped(typeof(IDashBoardRepository), typeof(DashBoardRepository));
 builder.Services.AddScoped(typeof(IDoctorService), typeof(DoctorService));
-builder.Services.AddScoped(typeof(IPatientService), typeof(PatientService));
-
+builder.Services.AddScoped(typeof(IPatientRepository), typeof(PatientRepository));
 builder.Services.AddScoped(typeof(IDoctorRepository), typeof(DoctorRepository));
 
 
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.SuppressModelStateInvalidFilter = true;
+});
 
-
-builder.Services.AddControllers(configure: MvcOptions => MvcOptions.Filters.Add(typeof(ModelValidationFilter))).AddNewtonsoftJson(options =>
+builder.Services.AddControllers(
+    configure: MvcOptions => {
+        MvcOptions.Filters.Add(typeof(ModelValidationFilter));
+        MvcOptions.Filters.Add(typeof (UnitOfWorkFilter));
+        }).AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -122,5 +128,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<ResponseMiddleWare>();
+
 
 app.Run();

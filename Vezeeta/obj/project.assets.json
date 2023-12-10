@@ -1596,20 +1596,6 @@
           "bin/placeholder/Core.dll": {}
         }
       },
-      "DependencyInjection/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v7.0",
-        "dependencies": {
-          "AutoMapper.Extensions.Microsoft.DependencyInjection": "12.0.1",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "7.0.0"
-        },
-        "compile": {
-          "bin/placeholder/DependencyInjection.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/DependencyInjection.dll": {}
-        }
-      },
       "Repository/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
@@ -4768,11 +4754,6 @@
       "path": "../Core/Core.csproj",
       "msbuildProject": "../Core/Core.csproj"
     },
-    "DependencyInjection/1.0.0": {
-      "type": "project",
-      "path": "../DependencyInjection/DependencyInjection.csproj",
-      "msbuildProject": "../DependencyInjection/DependencyInjection.csproj"
-    },
     "Repository/1.0.0": {
       "type": "project",
       "path": "../Repository/Repository.csproj",
@@ -4788,7 +4769,6 @@
     "net7.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 12.0.1",
       "Core >= 1.0.0",
-      "DependencyInjection >= 1.0.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.0",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 7.0.0",
       "Microsoft.AspNetCore.Mvc.NewtonsoftJson >= 7.0.0",
@@ -4832,9 +4812,6 @@
           "projectReferences": {
             "C:\\Users\\Ahmed\\Desktop\\vezeeta\\Core\\Core.csproj": {
               "projectPath": "C:\\Users\\Ahmed\\Desktop\\vezeeta\\Core\\Core.csproj"
-            },
-            "C:\\Users\\Ahmed\\Desktop\\vezeeta\\DependencyInjection\\DependencyInjection.csproj": {
-              "projectPath": "C:\\Users\\Ahmed\\Desktop\\vezeeta\\DependencyInjection\\DependencyInjection.csproj"
             },
             "C:\\Users\\Ahmed\\Desktop\\vezeeta\\Repository\\Repository.csproj": {
               "projectPath": "C:\\Users\\Ahmed\\Desktop\\vezeeta\\Repository\\Repository.csproj"

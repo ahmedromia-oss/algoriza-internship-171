@@ -13,6 +13,9 @@ namespace Core.Domain
         public virtual User user { get; set; }
         
         public virtual ICollection<Time> bookings {  get; set; }
-        
+        public virtual ICollection<Discount> discounts { get; set; }
+
+
+
     }
 }

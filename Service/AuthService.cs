@@ -6,6 +6,7 @@ using Core.Interfaces;
 using Core.Models;
 using Core.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Repository;
@@ -40,7 +41,7 @@ namespace Service
             return result.Succeeded;
         }
 
-        public async Task<List<Claim>> checkRoleToken(User user)
+        private async Task<List<Claim>> checkRoleToken(User user)
         {
             var role = await userManager.GetRolesAsync(user);
             List<Claim> authClaims = new List<Claim>();
@@ -73,7 +74,7 @@ namespace Service
             }
         }
 
-        public string getToken(List<Claim> authClaims)
+        private string getToken(List<Claim> authClaims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:secretToken"]));
 
@@ -98,14 +99,16 @@ namespace Service
             throw new Exception("No user with this email");
         }
 
-        public async Task<User> signUp(signUpDto signUpDto)
+        public async Task<User> signUp(signUpDto signUpDto , int userType)
 
         {
+           
+
             User userEmail = await userManager.FindByEmailAsync(signUpDto.Email);
            
             if (userEmail == null)
             {
-                User user =await this.unitOfWork.users.addUser(signUpDto);
+                User user =await this.unitOfWork.users.addUser(signUpDto , userType);
 
                 var result = await userManager.CreateAsync(user, signUpDto.Password);
                 if (result.Succeeded)
@@ -116,6 +119,7 @@ namespace Service
                 
 
             }
+           
             throw new Exception("Email already Taken");
         }
         

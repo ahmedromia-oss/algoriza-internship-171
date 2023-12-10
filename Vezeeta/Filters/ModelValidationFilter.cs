@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
 using Vezeeta.ResponseShape;
+using Core.Models;
 
 namespace Vezeeta.Filters
 {
@@ -16,7 +17,7 @@ namespace Vezeeta.Filters
             if (!context.ModelState.IsValid)
             {
 
-                context.Result = new BadRequestObjectResult(new ErrorResponse {statusCode= 400 ,  Errors = context.ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage).ToList() });
+                context.Result = new BadRequestObjectResult(new ErrorResponse {statusCode= Convert.ToInt32(Enums.StatusCode.BadRequest) ,  Errors = context.ModelState.Values.SelectMany(v => v.Errors).Select(x => x.ErrorMessage).ToList() });
             }
         }
     }

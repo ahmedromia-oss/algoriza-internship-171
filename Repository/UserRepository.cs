@@ -2,6 +2,7 @@
 using Core.Domain;
 using Core.DTOs.Auth;
 using Core.DTOs.User;
+using Core.Models;
 using Core.ReboInterfaces;
 using Core.Services;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +26,7 @@ namespace Repository
             this.mapper = mapper;
             this.fileOperation = fileOperation;
         }
-        public async Task<User> addUser(signUpDto signUpDto)
+        public async Task<User> addUser(signUpDto signUpDto , int userType)
         {
             if (!(await this.appDbContext.users.Where(e => e.Email == signUpDto.Email).AnyAsync()))
             {
@@ -37,6 +38,7 @@ namespace Repository
                     string uniqueFileName = this.fileOperation.AddFile(signUpDto.Image, "lib/Images");
                     user.ImageLink = uniqueFileName;
                 }
+                user.UserType = userType;
                 return user;
             }
             throw new Exception("Email Already Taken");

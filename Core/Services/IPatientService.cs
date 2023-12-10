@@ -16,16 +16,18 @@ namespace Core.Services
     public interface IPatientService
     {
         public Task<bool> addPatient(addPatientDto addPatientDto , User user);
-        public Task<ICollection<GetPatientDto>> getAll(PaginationModel paginationModel);
+        public Task<ICollection<GetPatientDto>> getAll(PaginationModel paginationModel , string searchTerm);
 
         public Task<GetPatientDto> getById(string id);
         public Task<GetPatientDto> loggedInUser(string email);
 
-        public Task<bool> book(string timeId , string Email);
+        public Task<PatientTime> book(string timeId , string Email);
 
         public Task<ICollection<getBookings>> bookings(string email);
 
-        public Task<bool> cancelBooking(string email , string timeId);
-        
+        public Task<PatientTime> cancelBooking(string email , string timeId);
+        public Task<int> count();
+
+
     }
 }

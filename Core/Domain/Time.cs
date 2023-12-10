@@ -24,5 +24,7 @@ namespace Core.Domain
 
         public bool IsBooked { get; set; }
 
+        public double price { get; set;}
+
     }
 }

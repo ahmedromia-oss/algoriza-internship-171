@@ -22,9 +22,15 @@ this.appDbContext = appDbContext;
         }
         public async Task<T> Add(Object addDto)
         {
-            await this.appDbContext.Set<T>().AddAsync(addDto as T);
-            return addDto as T;
+            T  data = this.mapper.Map<T>(addDto);
+            await this.appDbContext.Set<T>().AddAsync(data);
+            return data;
             
+        }
+
+        public async Task<int> count()
+        {
+            return await this.appDbContext.Set<T>().CountAsync();
         }
 
         public async Task<bool> deleteById(string id)
@@ -32,7 +38,7 @@ this.appDbContext = appDbContext;
             T entity =await this.appDbContext.Set<T>().FindAsync(id);
             if (entity == null)
             {
-                return false;
+                throw new FileNotFoundException("Not Found");
             }
            
                 this.appDbContext.Set<T>().Remove(entity);
@@ -49,9 +55,16 @@ this.appDbContext = appDbContext;
             return await this.appDbContext.Set<T>().Skip(((paginationModel.Page == 0 ? 1: paginationModel.Page) -1) * paginationModel.PageSize).ProjectTo<GetDTO>(mapper.ConfigurationProvider).Take(paginationModel.PageSize == 0 ? 10: paginationModel.PageSize).ToListAsync();
         }
 
-       
+        public async Task<ICollection<GetDTO>> GetAll(PaginationModel paginationModel ,Expression<Func<T ,bool>> where)
+        {
+            return await this.appDbContext.Set<T>().Skip(((paginationModel.Page == 0 ? 1 : paginationModel.Page) - 1) * paginationModel.PageSize)
+                .Where(where)
+                .ProjectTo<GetDTO>(mapper.ConfigurationProvider).Take(paginationModel.PageSize == 0 ? 10 : paginationModel.PageSize).ToListAsync();
+        }
 
-        
+
+
+
 
         public async Task<GetDTO> GetByWhere(Expression<Func<T, bool>> where)
         {
@@ -59,10 +72,16 @@ this.appDbContext = appDbContext;
            
         }
 
-        public T update(Object updateDto)
+        public async Task<T> update(Object updateDto ,string id)
         {
-            this.appDbContext.Set<T>().Update(updateDto as T);
-            return updateDto as T;
+            T data = await this.appDbContext.Set<T>().FindAsync(id);
+            if (data != null)
+            {
+                data = mapper.Map(updateDto , data);
+                this.appDbContext.Set<T>().Update(data);
+                return data;
+            }
+            throw new FileNotFoundException("Not Found");
         }
     }
 }

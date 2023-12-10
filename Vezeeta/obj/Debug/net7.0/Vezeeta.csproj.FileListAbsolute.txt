@@ -56,11 +56,9 @@ C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\runtimes\win\lib\netstan
 C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\runtimes\win\lib\netcoreapp3.0\System.Windows.Extensions.dll
 C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\Core.dll
-C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\DependencyInjection.dll
 C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\Repository.dll
 C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\Service.dll
 C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\Core.pdb
-C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\DependencyInjection.pdb
 C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\Repository.pdb
 C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\bin\Debug\net7.0\Service.pdb
 C:\Users\Ahmed\Desktop\vezeeta\Vezeeta\obj\Debug\net7.0\staticwebassets\msbuild.Vezeeta.Microsoft.AspNetCore.StaticWebAssets.props

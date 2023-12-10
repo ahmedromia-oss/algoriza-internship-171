@@ -13,24 +13,24 @@ using Vezeeta.ResponseShape;
 
 namespace Vezeeta.Controllers
 {
+    [ApiController]
     [Route("api/[controller]/[action]")]
     public class DoctorController : ControllerBase
     {
         private readonly IDoctorService doctorService;
         private readonly IHttpContextAccessor httpContextAccessor;
-       
+        
 
         public DoctorController(IDoctorService doctorService , IHttpContextAccessor httpContextAccessor)
         {
             this.doctorService = doctorService;
             this.httpContextAccessor = httpContextAccessor;
-           
         }
         [HttpGet]
         
-        public async Task<IActionResult> getAllDoctors([FromQuery] int pageSize , [FromQuery] int page)
+        public async Task<IActionResult> getAllDoctors([FromQuery] int pageSize , [FromQuery] int page , [FromQuery] string searchTerm = "")
         {
-            return Ok(new serviceResponse<ICollection<GetDoctorDto>> { statusCode = Convert.ToInt32(Enums.StatusCode.Success), data = await this.doctorService.getAll(new PaginationModel { Page = page, PageSize = pageSize }) });
+            return Ok(new serviceResponse<ICollection<GetDoctorDto>> { statusCode = Convert.ToInt32(Enums.StatusCode.Success), data = await this.doctorService.getAll(new PaginationModel { Page = page, PageSize = pageSize } , searchTerm) });
 
         }
         [HttpGet("{id}")]
@@ -47,19 +47,27 @@ namespace Vezeeta.Controllers
        
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer" , Roles = "Doctor")]
-        public async Task<IActionResult> addAppointment([FromBody] AddAppointmentDto addAppointmentDto)
+        public async Task<IActionResult> addAppointment([FromBody] AddApointments addApointments)
 
         {
-            string userEmail = this.httpContextAccessor.HttpContext.User.Identity.Name;
-            await this.doctorService.addAppointment(addAppointmentDto , userEmail);
-            return CreatedAtAction ( nameof(addAppointment), new serviceResponse<string> { statusCode = Convert.ToInt32(Enums.StatusCode.created), data = "Appointment Added"});
+
+          
+            
+                string userEmail = this.httpContextAccessor.HttpContext.User.Identity.Name;
+                await this.doctorService.addAppointment(addApointments, userEmail);
+            
+                return CreatedAtAction(nameof(addAppointment), new serviceResponse<string> { statusCode = Convert.ToInt32(Enums.StatusCode.created), data = "Appointment Added" });
+            
+           
         }
         [HttpGet]
-        
-        public async Task<IActionResult> getBookers()
+        [Authorize(AuthenticationSchemes = "Bearer" , Roles = "Doctor")]
+
+        public async Task<IActionResult> getBookers([FromQuery] int searchDay , [FromQuery] int page , [FromQuery] int pageSize)
         {
-            string userEmail = "ahmed@gmail.com";
-            return Ok(new serviceResponse<ICollection<getBookers>> { statusCode = Convert.ToInt32(Enums.StatusCode.Success), data =await this.doctorService.getBookers(userEmail)});
+            string userEmail = this.httpContextAccessor.HttpContext.User.Identity.Name;
+
+            return Ok(new serviceResponse<ICollection<getBookers>> { statusCode = Convert.ToInt32(Enums.StatusCode.Success), data =await this.doctorService.getBookers(userEmail , searchDay ,new PaginationModel {Page = page ,PageSize = pageSize})});
 
 
         }
@@ -67,24 +75,14 @@ namespace Vezeeta.Controllers
         [HttpPost]
         [Authorize(AuthenticationSchemes = "Bearer" , Roles = "Doctor")]
 
-        public async Task<IActionResult> confirmCheckUp([FromQuery] string timeId , [FromQuery] string userId)
+        public async Task<IActionResult> confirmCheckUp([FromQuery] string BookingId)
         {
-            string userEmail = this.httpContextAccessor.HttpContext.User.Identity.Name;
-            try
-            {
+                string userEmail = this.httpContextAccessor.HttpContext.User.Identity.Name;
 
-
-                await this.doctorService.confirmBook(userId, timeId , userEmail);
+                await this.doctorService.confirmBook(BookingId , userEmail);
                 return Ok(new serviceResponse<string> { statusCode = Convert.ToInt32(Enums.StatusCode.Success), data = "confirmed Booking" });
-            }
-            catch (FileNotFoundException ex)
-            {
-                return NotFound(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.NotFound), Errors = new { message = ex.Message } });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.BadRequest), Errors = new { message = ex.Message } });
-            }
+            
+           
 
         }
 
@@ -94,22 +92,11 @@ namespace Vezeeta.Controllers
         public async Task<IActionResult> updateTime([FromBody] updateAppointment updateAppointment , [FromQuery] string timeId)
         {
             string userEmail = this.httpContextAccessor.HttpContext.User.Identity.Name;
-            try
-            {
-
+          
 
                 await this.doctorService.UpdateTime(userEmail, timeId, updateAppointment);
                 return Created( nameof(updateTime), new serviceResponse<string> { statusCode = Convert.ToInt32(Enums.StatusCode.created), data = "Time Updated" });
-            }
-            catch (FileNotFoundException ex)
-            {
-                return NotFound(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.NotFound), Errors = new { message = ex.Message } });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.BadRequest), Errors = new { message = ex.Message } });
-            }
-
+           
         }
 
         [HttpDelete]
@@ -118,21 +105,12 @@ namespace Vezeeta.Controllers
         public async Task<IActionResult> deleteTime([FromQuery] string timeId)
         {
             string userEmail = this.httpContextAccessor.HttpContext.User.Identity.Name;
-            try
-            {
+          
 
 
                 await this.doctorService.deleteTime(userEmail, timeId);
                 return Ok(new serviceResponse<string> { statusCode = Convert.ToInt32(Enums.StatusCode.Success), data = "Time Deleted" });
-            }
-            catch (FileNotFoundException ex)
-            {
-                return NotFound(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.NotFound), Errors = new { message = ex.Message } });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new ErrorResponse { statusCode = Convert.ToInt32(Enums.StatusCode.BadRequest), Errors = new { message = ex.Message } });
-            }
+            
 
         }
 

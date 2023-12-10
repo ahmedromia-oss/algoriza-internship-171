@@ -19,7 +19,7 @@ namespace Core.Models
             NotFound = 404,
             BadRequest = 400,
             created = 201,
-            Removed = 203,
+           
             UnAuthorized = 401,
             Forbidden = 403
 
@@ -46,6 +46,18 @@ namespace Core.Models
             Admin = 1,
             Patient,
             Doctor
+        }
+
+        public enum DiscountType
+        {
+            value = 1,
+            percentage = 2
+        }
+
+        public enum DiscountStatus
+        {
+            valid = 1,
+            deactivated
         }
     }
 }

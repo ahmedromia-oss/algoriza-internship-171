@@ -11,13 +11,16 @@ namespace Core.Interfaces
     public interface IRepository<T , GetDTO>
     {
         public Task<ICollection<GetDTO>> GetAll(PaginationModel paginationModel);
-        
-       
+        public Task<ICollection<GetDTO>> GetAll(PaginationModel paginationModel , Expression<Func<T, bool>> where);
+
+
+
         public Task<GetDTO> GetByWhere(Expression<Func<T , bool>> where);
 
         public Task<T> Add(Object addDto);
-        public T update(Object updateDto);
+        public Task<T> update(Object updateDto , string id);
         public Task<bool> deleteById(string id);
+        public Task<int> count();
 
 
 

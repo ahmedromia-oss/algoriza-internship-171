@@ -29,10 +29,11 @@ namespace Service
           
         }
 
-        public async Task<bool> book(string timeId, string Email)
+        public async Task<PatientTime> book(string timeId, string Email)
         {
-            await this.unitOfWork.appointment.bookAppointment(timeId, Email);
-            return await this.unitOfWork.complete();
+            PatientTime patientTime =  await this.unitOfWork.appointment.bookAppointment(timeId, Email);
+            await this.unitOfWork.complete();
+            return patientTime;
         }
 
         public async Task<ICollection<getBookings>> bookings(string email)
@@ -40,15 +41,21 @@ namespace Service
            return await this.unitOfWork.appointment.getBookings(email);
         }
 
-        public async Task<bool> cancelBooking(string email, string timeId)
+        public async Task<PatientTime> cancelBooking(string email, string timeId)
         {
-            await this.unitOfWork.appointment.cancelAppointment(email, timeId);
-            return await this.unitOfWork.complete();
+            var result = await this.unitOfWork.appointment.cancelAppointment(email, timeId);
+            await this.unitOfWork.complete();
+            return result;
         }
 
-        public async Task<ICollection<GetPatientDto>> getAll(PaginationModel paginationModel)
+        public async Task<int> count()
         {
-            return await this.unitOfWork.patients.GetAll(paginationModel);
+            return await this.unitOfWork.patients.count();
+        }
+
+        public async Task<ICollection<GetPatientDto>> getAll(PaginationModel paginationModel , string searchTerm)
+        {
+            return await this.unitOfWork.patients.GetAll(paginationModel , e=>e.user.Email.Contains(searchTerm) || e.user.FullName.Contains(searchTerm));
         }
 
         public async Task<GetPatientDto> getById(string id)

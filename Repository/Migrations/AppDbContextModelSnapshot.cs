@@ -78,6 +78,40 @@ namespace Repository.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Core.Domain.Discount", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DiscountCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("NumOfRequests")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(10);
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<int>("status")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
+
+                    b.Property<double>("value")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiscountCode")
+                        .IsUnique();
+
+                    b.ToTable("discounts");
+                });
+
             modelBuilder.Entity("Core.Domain.Doctor", b =>
                 {
                     b.Property<string>("userId")
@@ -103,12 +137,35 @@ namespace Repository.Migrations
                     b.ToTable("patients");
                 });
 
-            modelBuilder.Entity("Core.Domain.PatientTime", b =>
+            modelBuilder.Entity("Core.Domain.PatientDiscount", b =>
                 {
-                    b.Property<string>("patientId")
+                    b.Property<string>("PatientId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("timeId")
+                    b.Property<string>("discountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("PatientId", "discountId");
+
+                    b.HasIndex("discountId");
+
+                    b.ToTable("patientDiscounts");
+                });
+
+            modelBuilder.Entity("Core.Domain.PatientTime", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DiscountId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<double>("finalPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("patientId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("status")
@@ -116,7 +173,17 @@ namespace Repository.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1);
 
-                    b.HasKey("patientId", "timeId");
+                    b.Property<string>("timeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiscountId")
+                        .IsUnique()
+                        .HasFilter("[DiscountId] IS NOT NULL");
+
+                    b.HasIndex("patientId");
 
                     b.HasIndex("timeId");
 
@@ -172,6 +239,9 @@ namespace Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<double>("price")
+                        .HasColumnType("float");
 
                     b.Property<TimeSpan>("time")
                         .HasColumnType("time");
@@ -230,17 +300,20 @@ namespace Repository.Migrations
                         new
                         {
                             Id = "A112730A-E0D5-4B22-959B-0DD25141BD4A",
-                            Name = "Admin"
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "A112730A-E0D5-4A23-959B-0DD25141BD4A",
-                            Name = "Doctor"
+                            Name = "Doctor",
+                            NormalizedName = "DOCTOR"
                         },
                         new
                         {
                             Id = "A112730A-E0D5-4C24-959B-0DD25141BD4A",
-                            Name = "Patient"
+                            Name = "Patient",
+                            NormalizedName = "PATIENT"
                         });
                 });
 
@@ -470,15 +543,15 @@ namespace Repository.Migrations
                         {
                             Id = "A112730A-E1B5-4C24-959B-0DD25141BD4A",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c17bea07-b2d2-4fad-8480-3f9a1dd9a0a4",
+                            ConcurrencyStamp = "3c92509a-7940-409a-80b1-64ac2e61ab8d",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHDK7yWCBNJ77P5c/r7E5Mu5kaLm55U0kETnSMiBZdJOmBv/v4TokftUd00PjwrV+g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOvI53ePifgYGc7u8nL7F7WBNsBfxKUrXlmIiMSl0LhGw3wAzZPl23TErKRnolpRiw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "482a5440-f773-485e-aae7-1bd154db5d42",
+                            SecurityStamp = "9a51bcab-2c8b-4dda-8b7c-c73ca6a54d35",
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -531,8 +604,31 @@ namespace Repository.Migrations
                     b.Navigation("user");
                 });
 
+            modelBuilder.Entity("Core.Domain.PatientDiscount", b =>
+                {
+                    b.HasOne("Core.Domain.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Core.Domain.Discount", "Discount")
+                        .WithMany()
+                        .HasForeignKey("discountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Discount");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("Core.Domain.PatientTime", b =>
                 {
+                    b.HasOne("Core.Domain.Discount", "discount")
+                        .WithOne()
+                        .HasForeignKey("Core.Domain.PatientTime", "DiscountId");
+
                     b.HasOne("Core.Domain.Patient", "patient")
                         .WithMany()
                         .HasForeignKey("patientId")
@@ -544,6 +640,8 @@ namespace Repository.Migrations
                         .HasForeignKey("timeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("discount");
 
                     b.Navigation("patient");
 
